@@ -1,5 +1,6 @@
 from typing import List
 from chess_tournament.models.player import Player
+from chess_tournament.models.match import Match
 
 def display_welcome():
     """Displays a welcoming message to the user."""
@@ -24,7 +25,7 @@ def display_welcome():
 
 def main():
     display_welcome()
-    # Your main menu or application logic starts here
+  
     print("Initializing system... Please select an option from the menu.")
 
    # Requirement: Using List to store our Player objects
@@ -37,11 +38,21 @@ def main():
     # Adding to our list
     players.append(player1)
     players.append(player2)
-
-    print(f"Successfully registered {len(players)} players:")
+    print(f"Successfully registered {len(players)} players: ")
     for p in players:
         # This uses the first_name and last_name from your __init__
         print(f"- {p.first_name} {p.last_name} (ID: {p.chess_id})")
+
+    # 2. Create a Match between two players
+    current_match = Match(player1=player1, score1=0.5, player2=player2, score2=0.5)
+
+    # 3. Display the match
+    print(current_match)  # Uses your __str__ method
+
+    # 4. Show the tuple format 
+
+    print(f"Serialized format: {current_match.to_tuple()}")
+  
 
 if __name__ == "__main__":
     main()

@@ -27,7 +27,7 @@ class Player:
             chess_id=data["chess_id"]
         )
         
-    def __str__(self):
-        #Retourne une représentation textuelle du joueur.
+    def __repr__(self):
+        #Retourne une représentation textuelle du joueur.for debugging purposes.
 
         return f"{self.first_name} {self.last_name} ({self.chess_id})"    
