@@ -1,6 +1,7 @@
 from typing import List
 from chess_tournament.models.player import Player
 from chess_tournament.models.match import Match
+from chess_tournament.models.round import Round
 
 def display_welcome():
     """Displays a welcoming message to the user."""
@@ -47,12 +48,24 @@ def main():
     current_match = Match(player1=player1, score1=0.5, player2=player2, score2=0.5)
 
     # 3. Display the match
-    print(current_match)  # Uses your __str__ method
+    print(current_match)  # This will use the __repr__ method of Match to display a nice format
 
     # 4. Show the tuple format 
 
     print(f"Serialized format: {current_match.to_tuple()}")
-  
-
+    def debug_round():
+        p1 = Player("Magnus", "Carlsen", "1990-11-30", "NOR001")
+        p2 = Player("Alireza", "Firouzja", "2003-06-18", "FRA001")
+        
+        match1 = Match(p1, 1.0, p2, 0.0)
+        
+        # Create the round
+        round1 = Round("Round 1", start_time="2026-02-07 14:00")
+        round1.add_match(match1)
+        
+        print(f"--- {round1.name} ---")
+        print(f"Matches: {round1.matches}") # Will use the __repr__ of Match for display
+        print(f"Serialized JSON: {round1.to_dict()}")
+    debug_round()
 if __name__ == "__main__":
     main()
