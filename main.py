@@ -1,50 +1,28 @@
-import os
-from chess_tournament.controllers.database import Database
+from chess_tournament.views.view import View
+from chess_tournament.controllers.player_controller import PlayerController
 
-def debug_database():
-    print("--- DEBUG DATABASE START ---")
-    # if os.path.exists("data"):
-    # 1. Test de création des dossiers
-    Database.ensure_data_dirs()
-    if os.path.exists("data/tournaments"):
-        print("[OK] Dossiers de données créés.")
-
-    # 2. Test des Joueurs (Save & Load)
-    mock_players = [
-        {"first_name": "Magnus", "last_name": "Carlsen", "chess_id": "NO12345"},
-        {"first_name": "Alireza", "last_name": "Firouzja", "chess_id": "FR67890"}
-    ]
+def debug_create_player():
+    # 1. On initialise la vue
+    view = View()
     
-    print("Sauvegarde des joueurs...")
-    Database.save_players(mock_players)
+    # 2. On initialise le contrôleur (il chargera les joueurs existants auto)
+    player_ctrl = PlayerController(view)
     
-    print("Chargement des joueurs...")
-    loaded_players = Database.load_players()
-    print(f"Joueurs récupérés : {len(loaded_players)}")
-    if loaded_players == mock_players:
-        print("[OK] Sauvegarde/Chargement des joueurs réussi.")
-
-    # 3. Test des Tournois (Fichiers individuels)
-    mock_tournament = {
-        "name": "Grand Prix Special",
-        "location": "Paris",
-        "players": [],
-        "rounds": []
-    }
+    print("--- DEBUG : CRÉATION DE JOUEUR ---")
     
-    print(f"Sauvegarde du tournoi : {mock_tournament['name']}...")
-    Database.save_tournament(mock_tournament)
+    # 3. On lance la méthode de création
+    # Cette méthode va :
+    # - Appeler view.get_player_info()
+    # - Créer l'objet Player
+    # - Sauvegarder dans data/players.json
+    player_ctrl.create_player()
     
-    print("Chargement de tous les tournois...")
-    all_tournaments = Database.load_tournaments()
-    print(f"Nombre de tournois trouvés : {len(all_tournaments)}")
-    
-    found = any(t['name'] == "Grand Prix Special" for t in all_tournaments)
-    if found:
-        print("[OK] Le tournoi a bien été créé et relu.")
-
-    print("\n--- DEBUG DATABASE FINISHED ---")
-    print("Vérifie ton dossier 'data/' pour voir les fichiers JSON générés.")
+    # 4. On vérifie en affichant la liste
+    print("\n--- VÉRIFICATION DE LA LISTE ---")
+    player_ctrl.list_players()
 
 if __name__ == "__main__":
-    debug_database()
+    try:
+        debug_create_player()
+    except KeyboardInterrupt:
+        print("\nTest interrompu.")
