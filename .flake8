@@ -1,0 +1,13 @@
+[flake8]
+max-line-length = 119
+exclude =
+    .venv,
+    venv,
+    .git,
+    __pycache__,
+    build,
+    dist,
+    flake8_rapport
+extend-exclude =
+    .venv/*,
+    venv/*

@@ -1,3 +1,4 @@
+"""Module du contrôleur principal de l'application."""
 from ..views.view import View
 from .player_controller import PlayerController
 from .tournament_controller import TournamentController
@@ -5,11 +6,19 @@ from .report_controller import ReportController
 
 
 class MainController:
-    # Contrôleur principal de l'application.
+    """Contrôleur principal de l'application.
 
+    Orchestre les différents contrôleurs et gère le menu principal.
+
+    Attributes:
+        view (View): Instance de la vue principale.
+        player_controller (PlayerController): Contrôleur des joueurs.
+        tournament_controller (TournamentController): Contrôleur des tournois.
+        report_controller (ReportController): Contrôleur des rapports.
+    """
 
     def __init__(self):
-        # Initialise le contrôleur principal et tous les sous-contrôleurs.
+        """Initialise le contrôleur principal et tous les sous-contrôleurs."""
         self.view = View()
         self.player_controller = PlayerController(self.view)
         self.tournament_controller = TournamentController(
@@ -18,8 +27,11 @@ class MainController:
         self.report_controller = ReportController(self.view)
 
     def run(self):
-        # Lance la boucle principale de l'application.
+        """Lance la boucle principale de l'application.
 
+        Affiche le menu principal et traite les choix de l'utilisateur
+        jusqu'à ce qu'il choisisse de quitter.
+        """
         while True:
             choice = self.view.display_main_menu()
             if choice == "1":
@@ -35,9 +47,11 @@ class MainController:
                 self.view.display_error("Invalid selection")
 
     def manage_players(self):
-        # Gère le menu des joueurs.
+        """Gère le menu des joueurs.
 
-        
+        Affiche le menu de gestion des joueurs et traite les choix
+        jusqu'à ce que l'utilisateur retourne au menu principal.
+        """
         while True:
             choice = self.view.display_player_menu()
             if choice == "1":
@@ -50,8 +64,11 @@ class MainController:
                 self.view.display_error("Invalid selection")
 
     def manage_tournaments(self):
-        # Gère le menu des tournois.
+        """Gère le menu des tournois.
 
+        Affiche le menu de gestion des tournois et traite les choix
+        jusqu'à ce que l'utilisateur retourne au menu principal.
+        """
         while True:
             choice = self.view.display_tournament_menu()
             if choice == "1":

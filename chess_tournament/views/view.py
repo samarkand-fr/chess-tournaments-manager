@@ -1,15 +1,22 @@
+"""Module de la vue (interface utilisateur en console)."""
 import re
 from datetime import date, datetime
 from tabulate import tabulate
 
 
 class View:
-    # Classe de vue pour l'affichage et la saisie utilisateur.
+    """Classe de vue pour l'affichage et la saisie utilisateur.
 
+    Gère toutes les interactions avec l'utilisateur via la console,
+    incluant l'affichage de menus, de données, et la capture d'entrées.
+    """
     @staticmethod
     def display_main_menu():
-       # Affiche le menu principal et retourne le choix utilisateur.
+        """Affiche le menu principal et retourne le choix utilisateur.
 
+        Returns:
+            str: Le choix de l'utilisateur.
+        """
         print("\n--- CHESS TOURNAMENT MANAGER ---")
         print("1. Manage Players")
         print("2. Manage Tournaments")
@@ -36,8 +43,15 @@ class View:
 
     @staticmethod
     def display_tournament_management_menu(tournament_name, status_info=""):
-        # Affiche le menu de gestion d'un tournoi.
+        """Affiche le menu de gestion d'un tournoi.
 
+        Args:
+            tournament_name (str): Nom du tournoi.
+            status_info (str): Information sur l'état actuel du tournoi.
+
+        Returns:
+            str: Le choix de l'utilisateur.
+        """
         print(f"\n--- MANAGING: {tournament_name} ---")
         if status_info:
             print(f"Status: {status_info}")
@@ -51,8 +65,16 @@ class View:
 
     @staticmethod
     def get_player_info():
-        # Demande les informations d'un nouveau joueur avec validation.
+        """Demande les informations d'un nouveau joueur avec validation.
 
+        Valide :
+        - Prénom et nom : uniquement lettres, espaces, tirets, apostrophes.
+        - Date de naissance : format YYYY-MM-DD valide.
+        - Chess ID : format AB12345 (2 lettres + 5 chiffres).
+
+        Returns:
+            dict: Dictionnaire contenant les données du joueur.
+        """
         # Modèle pour les noms (lettres accentuées acceptées)
         name_pattern = re.compile(r"^[A-Za-zÀ-ÿ\s'\-]+$")
         # Modèle pour l'identifiant national d'échecs
@@ -128,8 +150,17 @@ class View:
 
     @staticmethod
     def get_tournament_info():
-        #Demande les informations d'un nouveau tournoi avec validation.
+        """Demande les informations d'un nouveau tournoi avec validation.
 
+        Valide :
+        - Nom et lieu : non vides, uniquement texte.
+        - start_date : format DD/MM/YYYY et >= date d'aujourd'hui.
+        - end_date   : format DD/MM/YYYY et >= start_date.
+        - num_rounds : entier positif (défaut 4).
+
+        Returns:
+            dict: Dictionnaire contenant les données du tournoi.
+        """
         # Modèle pour un texte non numérique (noms / lieux)
         name_pattern = re.compile(r"^[A-Za-zÀ-ÿ0-9\s'\-\.]+$")
         today = date.today()
@@ -230,8 +261,11 @@ class View:
 
     @staticmethod
     def display_players(players):
-       # Affiche une liste de joueurs sous forme de tableau.
+        """Affiche une liste de joueurs sous forme de tableau.
 
+        Args:
+            players (list): Liste d'objets Player à afficher.
+        """
         print("\n--- PLAYERS LIST ---")
         if not players:
             print("No players found.")
@@ -253,8 +287,11 @@ class View:
 
     @staticmethod
     def display_tournaments(tournaments):
-        # Affiche une liste de tournois sous forme de tableau.
+        """Affiche une liste de tournois sous forme de tableau.
 
+        Args:
+            tournaments (list): Liste d'objets Tournament à afficher.
+        """
         print("\n--- TOURNAMENTS LIST ---")
         if not tournaments:
             print("No tournaments found.")
@@ -275,26 +312,41 @@ class View:
 
     @staticmethod
     def display_message(message):
-       # Affiche un message d'information.
+        """Affiche un message d'information.
 
+        Args:
+            message (str): Message à afficher.
+        """
         print(f"\n[INFO] {message}")
 
     @staticmethod
     def display_error(message):
-      # Affiche un message d'erreur.
+        """Affiche un message d'erreur.
 
+        Args:
+            message (str): Message d'erreur à afficher.
+        """
         print(f"\n[ERROR] {message}")
 
     @staticmethod
     def get_user_input(prompt):
-      # Demande une entrée à l'utilisateur.
+        """Demande une entrée à l'utilisateur.
 
+        Args:
+            prompt (str): Message d'invite.
+
+        Returns:
+            str: L'entrée de l'utilisateur.
+        """
         return input(prompt)
 
     @staticmethod
     def display_matches_for_scoring(matches):
-        # Affiche les matchs d'un tour pour la saisie des scores.
+        """Affiche les matchs d'un tour pour la saisie des scores.
 
+        Args:
+            matches (list): Liste d'objets Match à afficher.
+        """
         print("\n--- CURRENT ROUND MATCHES ---")
         if not matches:
             print("No matches in this round.")
@@ -321,8 +373,13 @@ class View:
 
     @staticmethod
     def display_rankings(sorted_players, scores, tournament_name):
-       # Affiche le classement des joueurs sous forme de tableau tabulaire.
+        """Affiche le classement des joueurs sous forme de tableau tabulaire.
 
+        Args:
+            sorted_players (list): Joueurs triés par score décroissant.
+            scores (dict): Dictionnaire {chess_id: score}.
+            tournament_name (str): Nom du tournoi.
+        """
         print(f"\n--- CLASSEMENT : {tournament_name} ---")
         if not sorted_players:
             print("Aucun joueur inscrit.")
@@ -345,9 +402,11 @@ class View:
 
     @staticmethod
     def display_rounds_report(rounds):
-       # Affiche les rounds et matchs d'un tournoi sous forme tabulaire.
+        """Affiche les rounds et matchs d'un tournoi sous forme tabulaire.
 
-      
+        Args:
+            rounds (list): Liste d'objets Round à afficher.
+        """
         if not rounds:
             print("Aucun round joué.")
             return
