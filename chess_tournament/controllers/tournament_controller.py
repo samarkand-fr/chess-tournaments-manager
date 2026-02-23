@@ -7,7 +7,7 @@ from .database import Database
 
 
 class TournamentController:
-    # Contrôleur pour la gestion des tournois.
+  # Contrôleur pour la gestion des tournois.
 
     def __init__(self, view, player_controller):
         # Initialise le contrôleur de tournois.
@@ -18,7 +18,7 @@ class TournamentController:
         self.load_tournaments()
 
     def load_tournaments(self):
-        # Charge tous les tournois depuis la base de données.
+        """Charge tous les tournois depuis la base de données."""
         data = Database.load_tournaments()
         # On vide la liste actuelle
         self.tournaments = []
@@ -30,7 +30,7 @@ class TournamentController:
             self.tournaments.append(tournament_obj)
 
     def save_tournament(self, tournament: Tournament):
-        # Sauvegarde un tournoi dans la base de données.
+       # Sauvegarde un tournoi dans la base de données.
 
         Database.save_tournament(tournament.to_dict())
 
@@ -43,7 +43,7 @@ class TournamentController:
         self.view.display_message("Tournament created successfully!")
 
     def manage_tournament(self):
-        # Permet de sélectionner et gérer un tournoi.
+        """Permet de sélectionner et gérer un tournoi."""
         self.view.display_tournaments(self.tournaments)
         choice = self.view.get_user_input("Select tournament ID to manage: ")
         try:
@@ -56,7 +56,7 @@ class TournamentController:
             self.view.display_error("Invalid input")
 
     def get_tournament_status(self, tournament: Tournament):
-        # Détermine l'état actuel du tournoi.
+       # Détermine l'état actuel du tournoi.
 
         # Tournament finished
         if tournament.current_round > tournament.num_rounds:
@@ -87,8 +87,9 @@ class TournamentController:
             return f"Finished ({tournament.num_rounds}/{tournament.num_rounds} rounds)"
 
     def process_tournament(self, tournament: Tournament):
-        # Traite les actions sur un tournoi sélectionné.
+       # Traite les actions sur un tournoi sélectionné.
 
+    
         while True:
             status = self.get_tournament_status(tournament)
             choice = self.view.display_tournament_management_menu(
@@ -110,7 +111,7 @@ class TournamentController:
                 self.view.display_error("Invalid choice")
 
     def add_player_to_tournament(self, tournament):
-        # Ajoute un joueur au tournoi.
+       # Ajoute un joueur au tournoi.
 
         # Validation: Cannot add players after rounds have started
         if tournament.rounds:
@@ -139,7 +140,7 @@ class TournamentController:
             self.view.display_error("Invalid input")
 
     def start_next_round(self, tournament: Tournament):
-        # Démarre le tour suivant du tournoi.
+       # Démarre le tour suivant du tournoi.
 
         # Validation 1: Check if tournament is finished
         if tournament.current_round > tournament.num_rounds:
@@ -222,7 +223,7 @@ class TournamentController:
             f"{new_round.name} started with {len(matches)} matches.")
 
     def generate_pairs(self, sorted_players, tournament):
-        # Génère les paires de joueurs pour un tour.
+      # Génère les paires de joueurs pour un tour.
 
         pairs = []
         remaining_players = sorted_players[:]
@@ -251,7 +252,7 @@ class TournamentController:
         return pairs
 
     def has_played_together(self, p1, p2, tournament):
-        # Vérifie si deux joueurs se sont déjà affrontés.
+       # Vérifie si deux joueurs se sont déjà affrontés.
 
         # Obtenir les IDs des joueurs à vérifier
         p1_id = p1.chess_id if hasattr(p1, 'chess_id') else p1.get('chess_id')
@@ -277,7 +278,7 @@ class TournamentController:
         return False
 
     def show_round_scores(self, tournament: Tournament):
-        # Affiche les scores d'un tour sélectionné.
+       # Affiche les scores d'un tour sélectionné.
 
         if not tournament.rounds:
             self.view.display_message("No rounds started.")
@@ -316,7 +317,7 @@ class TournamentController:
             self.view.display_error("Invalid input")
 
     def enter_scores(self, tournament: Tournament):
-        # Permet de saisir les scores des matchs du tour en cours.
+       # Permet de saisir les scores des matchs du tour en cours.
 
         if not tournament.rounds:
             self.view.display_error(
@@ -402,12 +403,15 @@ class TournamentController:
         return scores
 
     def show_rankings(self, tournament):
-        # Affiche le classement actuel du tournoi.
+       # Affiche le classement actuel du tournoi sous forme tabulaire.
 
         scores = self.calculate_scores(tournament)
-        sorted_players = sorted(tournament.players,
-                                key=lambda p: (scores.get(p.chess_id, 0), p.chess_id),reverse=True)
-        print(f"\n--- RANKINGS: {tournament.name} ---")
-        for i, p in enumerate(sorted_players, 1):
-            print(f"{i}. {p} - Score: {scores.get(p.chess_id, 0)}")
+        sorted_players = sorted(
+            tournament.players,
+            key=lambda p: (scores.get(p.chess_id, 0), p.chess_id),
+            reverse=True
+        )
+        # Déléguer l'affichage à la vue (tabulate)
+        self.view.display_rankings(sorted_players, scores, tournament.name)
         self.view.get_user_input("Press Enter to continue...")
+
