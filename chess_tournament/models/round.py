@@ -11,8 +11,8 @@ class Round:
 
     Attributes:
         name (str): Nom du tour (ex: "Round 1").
-        start_time (str): Heure de début au format "YYYY-MM-DD HH:MM:SS".
-        end_time (str): Heure de fin au format "YYYY-MM-DD HH:MM:SS".
+        start_time (str): Heure de début au format "DD/MM/YYYY HH:MM".
+        end_time (str): Heure de fin au format "DD/MM/YYYY HH:MM".
         matches (List[Match]): Liste des matchs du tour.
     """
 

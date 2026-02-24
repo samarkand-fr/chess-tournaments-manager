@@ -245,7 +245,7 @@ class TournamentController:
         # Create round
         new_round = Round(
             name=f"Round {tournament.current_round}",
-            start_time=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            start_time=datetime.now().strftime("%d/%m/%Y %H:%M"),
             end_time="",
             matches=matches
         )
@@ -253,7 +253,8 @@ class TournamentController:
         tournament.current_round += 1
         self.save_tournament(tournament)
         self.view.display_message(
-            f"{new_round.name} started with {len(matches)} matches.")
+            f"{new_round.name} started at {new_round.start_time} with {len(matches)} matches."
+        )
 
     def generate_pairs(self, sorted_players, tournament):
         """Génère les paires de joueurs pour un tour.
@@ -405,9 +406,11 @@ class TournamentController:
         # Check if all matches scored to mark end time
         if all(m.score1 + m.score2 > 0 for m in last_round.matches):
             if not last_round.end_time:
-                last_round.end_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                last_round.end_time = datetime.now().strftime("%d/%m/%Y %H:%M")
                 self.save_tournament(tournament)
-                self.view.display_message("All matches scored. Round finished.")
+                self.view.display_message(
+                    f"All matches scored. {last_round.name} finished at {last_round.end_time}."
+                )
 
     def _score_match(self, match):
         p1 = match.player1

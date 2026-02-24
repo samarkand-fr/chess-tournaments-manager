@@ -7,7 +7,7 @@ class Player:
     Attributes:
         first_name (str): Prénom du joueur.
         last_name (str): Nom de famille du joueur.
-        birth_date (str): Date de naissance au format YYYY-MM-DD.
+        birth_date (str): Date de naissance au format DD/MM/YYYY.
         chess_id (str): Identifiant national d'échecs unique.
     """
 
@@ -17,7 +17,7 @@ class Player:
         Args:
             first_name (str): Prénom du joueur.
             last_name (str): Nom de famille du joueur.
-            birth_date (str): Date de naissance (YYYY-MM-DD).
+            birth_date (str): Date de naissance (DD/MM/YYYY).
             chess_id (str): Identifiant national d'échecs.
         """
         self.first_name = first_name
