@@ -7,6 +7,7 @@ Python application for offline chess tournament management.
 ## 📋 Description
 
 This application allows you to manage chess tournaments in console mode, including:
+
 - Player management (creation, listing)
 - Tournament creation and management
 - Swiss pairing system with rematch avoidance
@@ -18,7 +19,7 @@ This application allows you to manage chess tournaments in console mode, includi
 
 The project follows the **MVC (Model-View-Controller)** design pattern for a clear separation of concerns:
 
-```
+```bash
 gestion-de-tournement/
 ├── chess_tournament/
 │   ├── models/          # Data entities
@@ -72,30 +73,36 @@ gestion-de-tournement/
 ### Steps
 
 1. **Clone the repository** (or download the project)
+
    ```bash
    git clone https://github.com/samarkand-fr/chess-tournaments-manager.git
    ```
- 
+
   ```bash
   cd ./chess-tournaments-manager/
    ```
 
-2. **Create a virtual environment**
+1. **Create a virtual environment**
+
    ```bash
    python3 -m venv .venv
    ```
 
-3. **Activate the virtual environment**
+2. **Activate the virtual environment**
    - **macOS/Linux**:
+
      ```bash
      source .venv/bin/activate
      ```
+
    - **Windows**:
+
      ```bash
      .venv\Scripts\activate
      ```
 
-4. **Install dependencies**
+3. **Install dependencies**
+
    ```bash
    pip install -r requirements.txt
    ```
@@ -147,7 +154,8 @@ The application uses numbered menus. Use **Q** to go back to the previous menu o
 ### Swiss Pairing System
 
 - **Round 1**: Random pairings
-- **Subsequent rounds**: 
+- **Subsequent rounds**:
+
   - Players sorted by descending score
   - Pairing of players with similar standings
   - Rematch avoidance (a player never meets the same opponent twice)
@@ -201,6 +209,7 @@ All classes and methods are documented with PEP 257 compliant docstrings.
 ## 🔧 Configuration
 
 The `.flake8` file configures the linting rules:
+
 - Maximum line length: 119 characters
 - Exclusions: `.venv`, `__pycache__`, `.git`
 
@@ -210,7 +219,6 @@ The `.flake8` file configures the linting rules:
 - **Date Format**: DD/MM/YYYY
 - **Number of Players**: Must be even for pairings (the application handles odd numbers by leaving one player without an opponent)
 - **Timestamps**: Rounds automatically record their start and end times in DD/MM/YYYY HH:MM format
-
 
 ## 📄 License
 

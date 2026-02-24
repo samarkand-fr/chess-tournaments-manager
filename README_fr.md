@@ -1,12 +1,12 @@
 # Gestion de Tournoi d'Échecs
 
-
 [🇬🇧 English version](README.md)
 Application Python de gestion de tournois d'échecs hors-ligne.
 
 ## 📋 Description
 
 Cette application permet de gérer des tournois d'échecs en mode console, incluant:
+
 - La gestion des joueurs (création, liste)
 - La création et gestion de tournois
 - Le système de pairing suisse avec évitement des rematches
@@ -18,7 +18,7 @@ Cette application permet de gérer des tournois d'échecs en mode console, inclu
 
 Le projet suit le patron de conception **MVC (Model-View-Controller)** pour une séparation claire des responsabilités:
 
-```
+``` bash
 gestion-de-tournement/
 ├── chess_tournament/
 │   ├── models/          # Entités de données
@@ -81,22 +81,27 @@ gestion-de-tournement/
   cd ./chess-tournaments-manager/
    ```
 
-2. **Créer un environnement virtuel**
+1. **Créer un environnement virtuel**
+
    ```bash
    python3 -m venv .venv
    ```
 
-3. **Activer l'environnement virtuel**
+2. **Activer l'environnement virtuel**
    - **macOS/Linux**:
+
      ```bash
      source .venv/bin/activate
      ```
+
    - **Windows**:
+
      ```bash
      .venv\Scripts\activate
      ```
 
-4. **Installer les dépendances**
+3. **Installer les dépendances**
+
    ```bash
    pip install -r requirements.txt
    ```
@@ -148,7 +153,7 @@ L'application utilise des menus numérotés. Utilisez **Q** pour revenir au menu
 ### Système de Pairing Suisse
 
 - **Tour 1**: Pairings aléatoires
-- **Tours suivants**: 
+- **Tours suivants**:
   - Joueurs triés par score décroissant
   - Pairing des joueurs de niveaux similaires
   - Évitement des rematches (un joueur ne rencontre jamais deux fois le même adversaire)
@@ -202,6 +207,7 @@ Toutes les classes et méthodes sont documentées avec des docstrings conformes 
 ## 🔧 Configuration
 
 Le fichier `.flake8` configure les règles de linting:
+
 - Longueur maximale de ligne: 119 caractères
 - Exclusions: `.venv`, `__pycache__`, `.git`
 
@@ -209,9 +215,8 @@ Le fichier `.flake8` configure les règles de linting:
 
 - **Identifiant National d'Échecs**: Chaque joueur doit avoir un identifiant unique
 - **Format de Date**: DD/MM/YYYY
-- **Nombre de Joueurs**: Doit être pair pour les pairings 
+- **Nombre de Joueurs**: Doit être pair pour les pairings
 - **Horodatage**: Les tours enregistrent automatiquement leurs heures de début et de fin au format DD/MM/YYYY HH:MM
-
 
 ## 📄 Licence
 
