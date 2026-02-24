@@ -1,90 +1,91 @@
-# Gestion de Tournoi d'Échecs
+# Chess Tournament Management
 
-Application Python de gestion de tournois d'échecs hors-ligne.
+[🇫🇷 Version française](README_fr.md)
+
+Python application for offline chess tournament management.
 
 ## 📋 Description
 
-Cette application permet de gérer des tournois d'échecs en mode console, incluant:
-- La gestion des joueurs (création, liste)
-- La création et gestion de tournois
-- Le système de pairing suisse avec évitement des rematches
-- La saisie interactive des scores
-- La génération de rapports détaillés
-- La persistance des données en JSON
+This application allows you to manage chess tournaments in console mode, including:
+- Player management (creation, listing)
+- Tournament creation and management
+- Swiss pairing system with rematch avoidance
+- Interactive score entry
+- Detailed report generation
+- JSON data persistence
 
 ## 🏗️ Architecture
 
-Le projet suit le patron de conception **MVC (Model-View-Controller)** pour une séparation claire des responsabilités:
+The project follows the **MVC (Model-View-Controller)** design pattern for a clear separation of concerns:
 
 ```
 gestion-de-tournement/
 ├── chess_tournament/
-│   ├── models/          # Entités de données
-│   │   ├── player.py    # Modèle Joueur
-│   │   ├── tournament.py # Modèle Tournoi
-│   │   ├── round.py     # Modèle Tour
-│   │   └── match.py     # Modèle Match
-│   ├── views/           # Interface utilisateur
-│   │   └── view.py      # Affichage console et saisie
-│   └── controllers/     # Logique métier
-│       ├── main_controller.py      # Contrôleur principal
-│       ├── player_controller.py    # Gestion des joueurs
-│       ├── tournament_controller.py # Gestion des tournois
-│       ├── report_controller.py    # Génération de rapports
-│       └── database.py             # Persistance JSON
-├── data/                # Données persistées
-│   ├── players.json     # Base de joueurs
-│   └── tournaments/     # Fichiers de tournois individuels
-├── main.py              # Point d'entrée
-└── requirements.txt     # Dépendances
-└── .gitignore     # Exclut fichiers
-└── .flake8    # Vérification
+│   ├── models/          # Data entities
+│   │   ├── player.py    # Player Model
+│   │   ├── tournament.py # Tournament Model
+│   │   ├── round.py     # Round Model
+│   │   └── match.py     # Match Model
+│   ├── views/           # User interface
+│   │   └── view.py      # Console display and input
+│   └── controllers/     # Business logic
+│       ├── main_controller.py      # Main controller
+│       ├── player_controller.py    # Player management
+│       ├── tournament_controller.py # Tournament management
+│       ├── report_controller.py    # Report generation
+│       └── database.py             # JSON persistence
+├── data/                # Persisted data
+│   ├── players.json     # Player database
+│   └── tournaments/     # Individual tournament files
+├── main.py              # Entry point
+└── requirements.txt     # Dependencies
+└── .gitignore     # Excluded  files
+└── .flake8    # Verification 
 ```
 
-### Modèles (Models)
+### Models
 
-- **Player**: Représente un joueur avec prénom, nom, date de naissance et identifiant national d'échecs
-- **Tournament**: Contient les informations du tournoi (nom, lieu, dates, description, nombre de tours)
-- **Round**: Représente un tour avec ses matchs et horodatages
-- **Match**: Oppose deux joueurs avec leurs scores respectifs
+- **Player**: Represents a player with first name, last name, birth date, and national chess ID
+- **Tournament**: Contains tournament information (name, location, dates, description, number of rounds)
+- **Round**: Represents a round with its matches and timestamps
+- **Match**: Pits two players against each other with their respective scores
 
-### Vues (Views)
+### Views
 
-- **View**: Gère l'affichage des menus, des tableaux (via `tabulate`), et la capture des entrées utilisateur
+- **View**: Handles displaying menus, tables (via `tabulate`), and capturing user input
 
-### Contrôleurs (Controllers)
+### Controllers
 
-- **MainController**: Orchestre l'application et gère le menu principal
-- **PlayerController**: Gère la création et l'affichage des joueurs
-- **TournamentController**: Implémente la logique des tournois (pairings, scores, classements)
-- **ReportController**: Génère les différents rapports
-- **Database**: Gère la persistance en JSON
+- **MainController**: Orchestrates the application and manages the main menu
+- **PlayerController**: Manages player creation and display
+- **TournamentController**: Implements tournament logic (pairings, scores, rankings)
+- **ReportController**: Generates various reports
+- **Database**: Handles JSON persistence
 
 ## ⚙️ Installation
 
-### Prérequis
+### Prerequisites
 
-- Python 3.8 ou supérieur
-- pip (gestionnaire de paquets Python)
+- Python 3.8 or higher
+- pip (Python package installer)
 
-### Étapes
+### Steps
 
-1. **Cloner le dépôt** (ou télécharger le projet)
-
- ```bash
+1. **Clone the repository** (or download the project)
+   ```bash
    git clone https://github.com/samarkand-fr/chess-tournaments-manager.git
    ```
-
-   ```bash
+ 
+  ```bash
   cd ./chess-tournaments-manager/
    ```
 
-2. **Créer un environnement virtuel**
+2. **Create a virtual environment**
    ```bash
    python3 -m venv .venv
    ```
 
-3. **Activer l'environnement virtuel**
+3. **Activate the virtual environment**
    - **macOS/Linux**:
      ```bash
      source .venv/bin/activate
@@ -94,14 +95,14 @@ gestion-de-tournement/
      .venv\Scripts\activate
      ```
 
-4. **Installer les dépendances**
+4. **Install dependencies**
    ```bash
    pip install -r requirements.txt
    ```
 
-## 🚀 Utilisation
+## 🚀 Usage
 
-### Lancer l'application
+### Run the application
 
 ```bash
 python main.py
@@ -109,113 +110,113 @@ python main.py
 
 ### Navigation
 
-L'application utilise des menus numérotés. Utilisez **Q** pour revenir au menu précédent ou quitter.
+The application uses numbered menus. Use **Q** to go back to the previous menu or exit.
 
-### Workflow typique
+### Typical Workflow
 
-1. **Créer des joueurs**
-   - Menu Principal → 1. Manage Players → 1. Create Player
-   - Saisir: prénom, nom, date de naissance (DD/MM/YYYY), identifiant d'échecs
+1. **Create players**
+   - Main Menu → 1. Manage Players → 1. Create Player
+   - Enter: first name, last name, birth date (YYYY-MM-DD), chess ID
 
-2. **Créer un tournoi**
-   - Menu Principal → 2. Manage Tournaments → 1. Create Tournament
-   - Saisir: nom, lieu, dates, description, nombre de tours (défaut: 4)
+2. **Create a tournament**
+   - Main Menu → 2. Manage Tournaments → 1. Create Tournament
+   - Enter: name, location, dates, description, number of rounds (default: 4)
 
-3. **Ajouter des joueurs au tournoi**
-   - Menu Principal → 2. Manage Tournaments → 3. Load/Manage Tournament
-   - Sélectionner le tournoi → 1. Add Player to Tournament
+3. **Add players to the tournament**
+   - Main Menu → 2. Manage Tournaments → 3. Load/Manage Tournament
+   - Select the tournament → 1. Add Player to Tournament
 
-4. **Démarrer un tour**
-   - Dans le menu de gestion du tournoi → 2. Start Next Round
-   - Les pairings sont générés automatiquement selon le système suisse
+4. **Start a round**
+   - In the tournament management menu → 2. Start Next Round
+   - Pairings are automatically generated according to the Swiss system
 
-5. **Saisir les scores**
-   - Menu de gestion → 3. Enter Round Scores
-   - Sélectionner un match par son numéro
-   - Saisir le résultat: [1] Joueur 1 gagne, [2] Joueur 2 gagne, [0] Match nul
+5. **Enter scores**
+   - Management menu → 3. Enter Round Scores
+   - Select a match by its number
+   - Enter the result: [1] Player 1 wins, [2] Player 2 wins, [0] Draw
 
-6. **Consulter les classements**
-   - Menu de gestion → 4. Show Rankings
+6. **View rankings**
+   - Management menu → 4. Show Rankings
 
-7. **Générer des rapports**
-   - Menu Principal → 3. Generate Reports
-   - Choisir parmi: liste des joueurs, liste des tournois, détails d'un tournoi, etc.
+7. **Generate reports**
+   - Main Menu → 3. Generate Reports
+   - Choose from: list of players, list of tournaments, tournament details, etc.
 
-## 📊 Fonctionnalités
+## 📊 Features
 
-### Système de Pairing Suisse
+### Swiss Pairing System
 
-- **Tour 1**: Pairings aléatoires
-- **Tours suivants**: 
-  - Joueurs triés par score décroissant
-  - Pairing des joueurs de niveaux similaires
-  - Évitement des rematches (un joueur ne rencontre jamais deux fois le même adversaire)
+- **Round 1**: Random pairings
+- **Subsequent rounds**: 
+  - Players sorted by descending score
+  - Pairing of players with similar standings
+  - Rematch avoidance (a player never meets the same opponent twice)
 
-### Système de Scores
+### Scoring System
 
-- **Victoire**: 1.0 point
-- **Match nul**: 0.5 point
-- **Défaite**: 0.0 point
+- **Win**: 1.0 point
+- **Draw**: 0.5 point
+- **Loss**: 0.0 point
 
-### Persistance des Données
+### Data Persistence
 
-- **Joueurs**: Sauvegardés dans `data/players.json`
-- **Tournois**: Chaque tournoi dans `data/tournaments/<nom_tournoi>.json`
-- Sauvegarde automatique après chaque modification
+- **Players**: Saved in `data/players.json`
+- **Tournaments**: Each tournament in `data/tournaments/<tournament_name>.json`
+- Automatic saving after each modification
 
-### Interface Améliorée
+### Improved Interface
 
-- Tableaux formatés avec `tabulate` pour une meilleure lisibilité
-- Navigation intuitive avec option "Q" pour revenir en arrière
-- Saisie de scores interactive par sélection de match
+- Formatted tables with `tabulate` for better readability
+- Intuitive navigation with "Q" option to go back
+- Interactive score entry by match selection
 
-## 🧪 Qualité du Code
+## 🧪 Code Quality
 
-### Conformité PEP 8
+### PEP 8 Compliance
 
-Le projet respecte les standards PEP 8. Pour vérifier:
+The project respects PEP 8 standards. To verify:
 
 ```bash
 flake8
 ```
 
-### Génération du Rapport Flake8 HTML
+### HTML Flake8 Report Generation
 
 ```bash
 flake8 --format=html --htmldir=flake8_rapport
 ```
 
-Le rapport sera disponible dans `flake8_rapport/index.html`.
+The report will be available in `flake8_rapport/index.html`.
 
 ### Documentation
 
-Toutes les classes et méthodes sont documentées avec des docstrings conformes à PEP 257.
+All classes and methods are documented with PEP 257 compliant docstrings.
 
-## 📦 Dépendances
+## 📦 Dependencies
 
-- **tabulate** (2.0.2): Formatage de tableaux en console
-- **flake8** (7.1.1): Vérification de la qualité du code
-- **flake8-html** (0.4.3): Génération de rapports HTML
+- **tabulate** (2.0.2): Console table formatting
+- **flake8** (7.1.1): Code quality checking
+- **flake8-html** (0.4.3): HTML report generation
 
 ## 🔧 Configuration
 
-Le fichier `.flake8` configure les règles de linting:
-- Longueur maximale de ligne: 119 caractères
+The `.flake8` file configures the linting rules:
+- Maximum line length: 119 characters
 - Exclusions: `.venv`, `__pycache__`, `.git`
 
-## 📝 Notes Techniques
+## 📝 Technical Notes
 
-- **Identifiant National d'Échecs**: Chaque joueur doit avoir un identifiant unique
-- **Format de Date**: DD/MM/YYYY
-- **Nombre de Joueurs**: Doit être pair pour les pairings 
-- **Horodatage**: Les tours enregistrent automatiquement leurs heures de début et de fin au format DD/MM/YYYY HH:MM
+- **National Chess ID**: Each player must have a unique identifier
+- **Date Format**: DD/MM/YYYY
+- **Number of Players**: Must be even for pairings (the application handles odd numbers by leaving one player without an opponent)
+- **Timestamps**: Rounds automatically record their start and end times in DD/MM/YYYY HH:MM format
 
 
-## 📄 Licence
+## 📄 License
 
-Projet éducatif - OpenClassrooms
+Educational project - OpenClassrooms
 
-## 🔗 Ressources
+## 🔗 Resources
 
 - [PEP 8 - Style Guide for Python Code](https://peps.python.org/pep-0008/)
 - [PEP 257 - Docstring Conventions](https://peps.python.org/pep-0257/)
