@@ -123,7 +123,7 @@ The application uses numbered menus. Use **Q** to go back to the previous menu o
 
 1. **Create players**
    - Main Menu → 1. Manage Players → 1. Create Player
-   - Enter: first name, last name, birth date (YYYY-MM-DD), chess ID
+   - Enter: first name, last name, birth date (DD/MM/YYYY), chess ID
 
 2. **Create a tournament**
    - Main Menu → 2. Manage Tournaments → 1. Create Tournament
