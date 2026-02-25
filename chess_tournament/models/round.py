@@ -66,7 +66,7 @@ class Round:
         }
 
     @classmethod
-    def from_dict(cls,data):
+    def from_dict(cls, data):
         """Crée une instance de Round à partir d'un dictionnaire.
 
         Args:
