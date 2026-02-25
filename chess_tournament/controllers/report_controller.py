@@ -91,11 +91,7 @@ class ReportController:
         tournament = self._select_tournament()
         if tournament:
             self.view.display_report_header(f"DETAILS: {tournament.name}")
-            print(f"Name: {tournament.name}")
-            print(f"Location: {tournament.location}")
-            print(f"Dates: {tournament.start_date} to {tournament.end_date}")
-            print(f"Description: {tournament.description}")
-            print(f"Rounds: {tournament.num_rounds}")
+            self.view.display_tournament_details(tournament)
             self.view.pause()
 
     def tournament_players(self):
@@ -107,8 +103,7 @@ class ReportController:
             if not players:
                 print("No players registered.")
             else:
-                for p in players:
-                    print(str(p))
+                self.view.display_players(players)
             self.view.pause()
 
     def tournament_rounds(self):

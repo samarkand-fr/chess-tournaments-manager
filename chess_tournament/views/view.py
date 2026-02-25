@@ -442,6 +442,27 @@ class View:
             ))
 
     @staticmethod
+    def display_tournament_details(tournament):
+        """Affiche les détails d'un tournoi sous forme de tableau.
+
+        Args:
+            tournament (Tournament): Le tournoi à afficher.
+        """
+        table_data = [
+            ["Nom", tournament.name],
+            ["Lieu", tournament.location],
+            ["Dates", f"Du {tournament.start_date} au {tournament.end_date}"],
+            ["Tours", tournament.num_rounds],
+            ["Description", tournament.description or "N/A"]
+        ]
+
+        print(tabulate(
+            table_data,
+            headers=["Attribut", "Valeur"],
+            tablefmt="fancy_grid"
+        ))
+
+    @staticmethod
     def display_reports_menu():
         print("\n--- REPORTS MENU ---")
         print("1. List All Players")
