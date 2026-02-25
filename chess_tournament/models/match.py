@@ -33,8 +33,8 @@ class Match:
         """
         return ([self.player1, self.score1], [self.player2, self.score2])
 
-    @staticmethod
-    def from_tuple(match_tuple):
+    @classmethod
+    def from_tuple(cls, match_tuple):
         """Crée une instance de Match à partir d'un tuple.
 
         Args:
@@ -46,8 +46,7 @@ class Match:
         p1_data, p2_data = match_tuple
         player1, score1 = p1_data
         player2, score2 = p2_data
-        # On utilise explicitement 'Match'
-        return Match(player1, score1, player2, score2)
+        return cls(player1, score1, player2, score2)
 
     def __str__(self):
         """Retourne une représentation textuelle du match.

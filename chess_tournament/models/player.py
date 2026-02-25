@@ -38,8 +38,8 @@ class Player:
             "chess_id": self.chess_id
         }
 
-    @staticmethod
-    def from_dict(data):
+    @classmethod
+    def from_dict(cls, data):
         """Crée une instance de Player à partir d'un dictionnaire.
 
         Args:
@@ -48,8 +48,7 @@ class Player:
         Returns:
             Player: Nouvelle instance de Player.
         """
-        # On utilise directement le nom de la classe 'Player'
-        return Player(
+        return cls(
             first_name=data["first_name"],
             last_name=data["last_name"],
             birth_date=data["birth_date"],

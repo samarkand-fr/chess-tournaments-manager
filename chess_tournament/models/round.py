@@ -65,8 +65,8 @@ class Round:
             "matches": serialized_matches
         }
 
-    @staticmethod
-    def from_dict(data):
+    @classmethod
+    def from_dict(cls,data):
         """Crée une instance de Round à partir d'un dictionnaire.
 
         Args:
@@ -80,8 +80,7 @@ class Round:
         for m_tuple in matches_data:
             matches.append(Match.from_tuple(m_tuple))
 
-        # On utilise explicitement 'Round'
-        return Round(
+        return cls(
             name=data["name"],
             start_time=data["start_time"],
             end_time=data["end_time"],

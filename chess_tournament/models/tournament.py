@@ -82,8 +82,8 @@ class Tournament:
             "players": [p.to_dict() for p in self.players]
         }
 
-    @staticmethod
-    def from_dict(data):
+    @classmethod
+    def from_dict(cls, data):
         """Crée une instance de Tournament à partir d'un dictionnaire.
 
         Args:
@@ -102,8 +102,7 @@ class Tournament:
         for p_dict in data.get("players", []):
             players_list.append(Player.from_dict(p_dict))
 
-        # On utilise explicitement 'Tournament'
-        return Tournament(
+        return cls(
             name=data["name"],
             location=data["location"],
             start_date=data["start_date"],
