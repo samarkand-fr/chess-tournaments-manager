@@ -288,9 +288,6 @@ class TournamentController:
 
             if opponent:
                 pairs.append((p1, opponent))
-            else:
-                # Should not happen if check strictly even number of players
-                pass
 
         return pairs
 
@@ -345,12 +342,7 @@ class TournamentController:
             return
 
         # Multiple rounds - let user choose
-        print("\n--- SELECT ROUND ---")
-        for i, round_obj in enumerate(tournament.rounds, 1):
-            unscored = sum(1 for m in round_obj.matches
-                           if m.score1 == 0 and m.score2 == 0)
-            status = "Complete" if unscored == 0 else f"{unscored} pending"
-            print(f"{i}. {round_obj.name} - {status}")
+        self.view.display_round_selection(tournament.rounds)
 
         choice = self.view.get_user_input(
             "Select round number (or 'Q' to cancel): "
@@ -413,13 +405,26 @@ class TournamentController:
                 )
 
     def _score_match(self, match):
+        """Gère la saisie du score d'un match individuel.
+
+        Args:
+            match (Match): Le match à scorer.
+        """
         p1 = match.player1
         p2 = match.player2
         # Safely get last names whether player is object or dict
         p1_name = p1.last_name if hasattr(p1, 'last_name') else p1.get('last_name', 'Unknown')
         p2_name = p2.last_name if hasattr(p2, 'last_name') else p2.get('last_name', 'Unknown')
 
-        print(f"\nScoring: {p1_name} vs {p2_name}")
+        # Bloquer la modification d'un match déjà scoré
+        if match.score1 + match.score2 > 0:
+            self.view.display_error(
+                f"Match {p1_name} vs {p2_name} is already scored "
+                f"({match.score1} - {match.score2}). Result is locked."
+            )
+            return
+
+        self.view.display_scoring_prompt(p1_name, p2_name)
         result = self.view.get_user_input(
             f"Result ([1] {p1_name} wins, "
             f"[2] {p2_name} wins, [0] Draw): "

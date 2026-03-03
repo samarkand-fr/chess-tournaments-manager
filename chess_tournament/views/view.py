@@ -474,6 +474,32 @@ class View:
         return input("Select an option: ")
 
     @staticmethod
+    def display_round_selection(rounds):
+        """Affiche la liste des rounds pour permettre une sélection.
+
+        Args:
+            rounds (list): Liste d'objets Round à afficher.
+        """
+        print("\n--- SELECT ROUND ---")
+        for i, round_obj in enumerate(rounds, 1):
+            unscored = sum(
+                1 for m in round_obj.matches
+                if m.score1 == 0 and m.score2 == 0
+            )
+            status = "Complete" if unscored == 0 else f"{unscored} pending"
+            print(f"{i}. {round_obj.name} - {status}")
+
+    @staticmethod
+    def display_scoring_prompt(p1_name, p2_name):
+        """Affiche le titre du match sur le point d'être scoré.
+
+        Args:
+            p1_name (str): Nom du premier joueur.
+            p2_name (str): Nom du deuxième joueur.
+        """
+        print(f"\nScoring: {p1_name} vs {p2_name}")
+
+    @staticmethod
     def display_report_header(title):
         print(f"\n=== {title} ===")
 
