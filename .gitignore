@@ -1,10 +1,15 @@
-# Python
+# Python - Fichiers compilés
 __pycache__/
 *.pyc
+
+# Environnement virtuel
 .venv/
 venv/
+
+# Variables d'environnement et système
 .env
 .DS_Store
+
+# Données locales (Optionnel : à garder si tu veux un dépôt vide de tests)
 data/
-flake8_rapport/
-*.html
+
