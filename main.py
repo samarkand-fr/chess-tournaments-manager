@@ -1,13 +1,13 @@
-"""Point d'entrée principal de l'application de gestion de tournois d'échecs.
+"""Main entry point for the chess tournament management application.
 
-Ce module initialise et lance l'application en créant une instance du
-contrôleur principal et en démarrant la boucle d'interaction utilisateur.
+This module initializes and launches the application by creating an instance of the
+main controller and starting the user interaction loop.
 """
 from chess_tournament.controllers.main_controller import MainController
 
 
 def main():
-    """Lance l'application de gestion de tournois d'échecs."""
+    """Launches the chess tournament management application."""
     app = MainController()
     app.run()
 

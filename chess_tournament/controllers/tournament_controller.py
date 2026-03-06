@@ -1,4 +1,4 @@
-"""Module du contrôleur de gestion des tournois."""
+"""Tournament management controller module."""
 from datetime import datetime
 import random
 from ..models.tournament import Tournament
@@ -8,23 +8,23 @@ from ..views.tournament_view import TournamentView
 
 
 class TournamentController:
-    """Contrôleur pour la gestion des tournois.
+    """Controller for tournament management.
 
-    Gère la création, le chargement, et toute la logique des tournois
-    incluant les pairings, la saisie des scores, et les classements.
+    Manages tournament creation, loading, and logic,
+    including pairings, score entry, and rankings.
 
     Attributes:
-        view: Instance de la vue pour l'affichage.
-        player_controller: Contrôleur des joueurs.
-        tournaments (list): Liste des tournois chargés.
+        view: View instance for display.
+        player_controller: Player controller.
+        tournaments (list): List of loaded tournaments.
     """
 
     def __init__(self, player_controller, db):
-        """Initialise le contrôleur de tournois.
+        """Initializes the tournament controller.
 
         Args:
-            player_controller: Contrôleur des joueurs.
-            db: Instance de base de données.
+            player_controller: Player controller.
+            db: Database instance.
         """
         self.view = TournamentView()
         self.player_controller = player_controller
@@ -33,27 +33,27 @@ class TournamentController:
         self.load_tournaments()
 
     def load_tournaments(self):
-        """Charge tous les tournois depuis la base de données."""
+        """Loads all tournaments from the database."""
         data = self.db.load_tournaments()
-        # On vide la liste actuelle
+        # Clear current list
         self.tournaments = []
-        # Pour chaque dictionnaire de tournoi dans les données...
+        # For each tournament dictionary in data...
         for t in data:
-            # ...on crée un objet Tournament
+            # ...create a Tournament object
             tournament_obj = Tournament.from_dict(t)
-            # ...et on l'ajoute à la liste
+            # ...and add it to the list
             self.tournaments.append(tournament_obj)
 
     def save_tournament(self, tournament: Tournament):
-        """Sauvegarde un tournoi dans la base de données.
+        """Saves a tournament to the database.
 
         Args:
-            tournament (Tournament): Tournoi à sauvegarder.
+            tournament (Tournament): Tournament to save.
         """
         self.db.save_tournament(tournament.to_dict())
 
     def create_tournament(self):
-        """Crée un nouveau tournoi via l'interaction utilisateur."""
+        """Creates a new tournament via user interaction."""
         info = self.view.get_tournament_info()
         tournament = Tournament.from_dict(info)
         self.tournaments.append(tournament)
@@ -61,7 +61,7 @@ class TournamentController:
         self.view.display_message("Tournament created successfully!")
 
     def manage_tournament(self):
-        """Permet de sélectionner et gérer un tournoi."""
+        """Allows selecting and managing a tournament."""
         self.view.display_tournaments(self.tournaments)
         choice = self.view.get_user_input("Select tournament ID to manage: ")
         try:
@@ -74,13 +74,13 @@ class TournamentController:
             self.view.display_error("Invalid input")
 
     def get_tournament_status(self, tournament: Tournament):
-        """Détermine l'état actuel du tournoi.
+        """Determines the current state of the tournament.
 
         Args:
-            tournament (Tournament): Le tournoi à analyser.
+            tournament (Tournament): The tournament to analyze.
 
         Returns:
-            str: Description de l'état du tournoi.
+            str: Description of the tournament's state.
         """
         # Tournament finished
         if tournament.current_round > tournament.num_rounds:
@@ -93,10 +93,10 @@ class TournamentController:
                 return f"Waiting for players ({player_count}/8 minimum)"
             return f"Ready to start ({player_count} players)"
 
-        # Check last round (Vérifier le dernier round)
+        # Check last round
         last_round = tournament.rounds[-1]
 
-        # Compter les matchs non terminés (score 0 vs 0)
+        # Count unfinished matches (score 0 vs 0)
         unscored = 0
         for m in last_round.matches:
             if m.score1 == 0 and m.score2 == 0:
@@ -111,10 +111,10 @@ class TournamentController:
             return f"Finished ({tournament.num_rounds}/{tournament.num_rounds} rounds)"
 
     def process_tournament(self, tournament: Tournament):
-        """Traite les actions sur un tournoi sélectionné.
+        """Processes actions on a selected tournament.
 
         Args:
-            tournament (Tournament): Le tournoi à gérer.
+            tournament (Tournament): The tournament to manage.
         """
         while True:
             status = self.get_tournament_status(tournament)
@@ -137,10 +137,10 @@ class TournamentController:
                 self.view.display_error("Invalid choice")
 
     def add_player_to_tournament(self, tournament):
-        """Ajoute un joueur au tournoi.
+        """Adds a player to the tournament.
 
         Args:
-            tournament: Le tournoi auquel ajouter le joueur.
+            tournament: The tournament to add the player to.
         """
         # Validation: Cannot add players after rounds have started
         if tournament.rounds:
@@ -169,12 +169,12 @@ class TournamentController:
             self.view.display_error("Invalid input")
 
     def start_next_round(self, tournament: Tournament):
-        """Démarre le tour suivant du tournoi.
+        """Starts the next round of the tournament.
 
-        Génère les pairings selon le système suisse et crée les matchs.
+        Generates pairings using the Swiss system and creates matches.
 
         Args:
-            tournament (Tournament): Le tournoi en cours.
+            tournament (Tournament): The current tournament.
         """
         # Validation 1: Check if tournament is finished
         if tournament.current_round > tournament.num_rounds:
@@ -192,7 +192,7 @@ class TournamentController:
         # Validation 3: Check if previous round is finished
         if tournament.rounds:
             last_round = tournament.rounds[-1]
-            # Chercher les matchs non terminés
+            # Find unfinished matches
             unscored_matches = []
             for m in last_round.matches:
                 if m.score1 == 0 and m.score2 == 0:
@@ -222,12 +222,12 @@ class TournamentController:
             for i in range(0, len(players), 2):
                 pairs.append((players[i], players[i+1]))
         else:
-            # Calculer les scores actuels
+            # Calculate current scores
             scores = self.calculate_scores(tournament)
 
-            # Trier les joueurs : d'abord par score (descendant), puis par ID
-            # On utilise une fonction de tri personnalisée (lambda)
-            # x[0] est le score, x[1] est l'ID
+            # Sort players: by score (descending), then by ID
+            # Using a custom sort function (lambda)
+            # x[0] is score, x[1] is ID
             players = sorted(
                 tournament.players,
                 key=lambda p: (scores.get(p.chess_id, 0), p.chess_id),
@@ -236,10 +236,10 @@ class TournamentController:
 
             pairs = self.generate_pairs(players, tournament)
 
-        # Create matches (Créer les objets Match)
+        # Create Match objects
         matches = []
         for p1, p2 in pairs:
-            # Score 0 pour commencer pour les deux joueurs
+            # Starting score of 0 for both players
             new_match = Match(p1, 0, p2, 0)
             matches.append(new_match)
 
@@ -258,16 +258,16 @@ class TournamentController:
         )
 
     def generate_pairs(self, sorted_players, tournament):
-        """Génère les paires de joueurs pour un tour.
+        """Generates player pairs for a round.
 
-        Utilise le système suisse en évitant les rematches.
+        Uses the Swiss system, avoiding rematches.
 
         Args:
-            sorted_players (list): Joueurs triés par score.
-            tournament (Tournament): Le tournoi en cours.
+            sorted_players (list): Players sorted by score.
+            tournament (Tournament): The current tournament.
 
         Returns:
-            list: Liste de tuples (joueur1, joueur2).
+            list: List of tuples (player1, player2).
         """
         pairs = []
         remaining_players = sorted_players[:]
@@ -293,32 +293,32 @@ class TournamentController:
         return pairs
 
     def has_played_together(self, p1, p2, tournament):
-        """Vérifie si deux joueurs se sont déjà affrontés.
+        """Checks if two players have already played against each other.
 
         Args:
-            p1: Premier joueur.
-            p2: Deuxième joueur.
-            tournament (Tournament): Le tournoi à vérifier.
+            p1: First player.
+            p2: Second player.
+            tournament (Tournament): The tournament to check.
 
         Returns:
-            bool: True s'ils ont déjà joué ensemble.
+            bool: True if they have played together.
         """
-        # Obtenir les IDs des joueurs à vérifier
+        # Get IDs of players to check
         p1_id = p1.chess_id if hasattr(p1, 'chess_id') else p1.get('chess_id')
         p2_id = p2.chess_id if hasattr(p2, 'chess_id') else p2.get('chess_id')
 
-        # Parcourir tous les rounds passés
+        # Iterate through all past rounds
         for round_obj in tournament.rounds:
-            # Parcourir tous les matchs du round
+            # Iterate through all matches in the round
             for match in round_obj.matches:
                 m1 = match.player1
                 m2 = match.player2
 
-                # Obtenir les IDs des joueurs du match
+                # Get IDs of players in the match
                 m1_id = m1.chess_id if hasattr(m1, 'chess_id') else m1.get('chess_id')
                 m2_id = m2.chess_id if hasattr(m2, 'chess_id') else m2.get('chess_id')
 
-                # Vérifier si c'est le même match (A vs B ou B vs A)
+                # Check if it's the same match (A vs B or B vs A)
                 if m1_id == p1_id and m2_id == p2_id:
                     return True
                 if m1_id == p2_id and m2_id == p1_id:
@@ -327,10 +327,10 @@ class TournamentController:
         return False
 
     def show_round_scores(self, tournament: Tournament):
-        """Affiche les scores d'un tour sélectionné.
+        """Displays scores for a selected round.
 
         Args:
-            tournament (Tournament): Le tournoi en cours.
+            tournament (Tournament): The current tournament.
         """
         if not tournament.rounds:
             self.view.display_message("No rounds started.")
@@ -364,10 +364,10 @@ class TournamentController:
             self.view.display_error("Invalid input")
 
     def enter_scores(self, tournament: Tournament):
-        """Permet de saisir les scores des matchs du tour en cours.
+        """Allows entry of scores for matches in the current round.
 
         Args:
-            tournament (Tournament): Le tournoi en cours.
+            tournament (Tournament): The current tournament.
         """
         if not tournament.rounds:
             self.view.display_error(
@@ -406,10 +406,10 @@ class TournamentController:
                 )
 
     def _score_match(self, match):
-        """Gère la saisie du score d'un match individuel.
+        """Handles score entry for an individual match.
 
         Args:
-            match (Match): Le match à scorer.
+            match (Match): The match to score.
         """
         p1 = match.player1
         p2 = match.player2
@@ -417,7 +417,7 @@ class TournamentController:
         p1_name = p1.last_name if hasattr(p1, 'last_name') else p1.get('last_name', 'Unknown')
         p2_name = p2.last_name if hasattr(p2, 'last_name') else p2.get('last_name', 'Unknown')
 
-        # Bloquer la modification d'un match déjà scoré
+        # Block modification of an already scored match
         if match.score1 + match.score2 > 0:
             self.view.display_error(
                 f"Match {p1_name} vs {p2_name} is already scored "
@@ -443,20 +443,20 @@ class TournamentController:
             self.view.display_error("Invalid result. Scores unchanged.")
 
     def calculate_scores(self, tournament):
-        """Calcule les scores totaux de tous les joueurs.
+        """Calculates total scores for all players.
 
         Args:
-            tournament (Tournament): Le tournoi à calculer.
+            tournament (Tournament): The tournament to calculate.
 
         Returns:
-            dict: Dictionnaire {chess_id: score_total}.
+            dict: Dictionary {chess_id: total_score}.
         """
         scores = {}
-        # Initialiser le score de tout le monde à 0
+        # Initialize everyone's score to 0
         for p in tournament.players:
             scores[p.chess_id] = 0.0
 
-        # Parcourir tous les matchs pour additionner les points
+        # Iterate through all matches to add points
         for round_obj in tournament.rounds:
             for match in round_obj.matches:
                 p1 = match.player1
@@ -466,7 +466,7 @@ class TournamentController:
                 p1_id = p1.chess_id if hasattr(p1, 'chess_id') else p1.get('chess_id')
                 p2_id = p2.chess_id if hasattr(p2, 'chess_id') else p2.get('chess_id')
 
-                # Ajouter les scores si les joueurs sont dans le dictionnaire
+                # Add scores if players are in the dictionary
                 if p1_id in scores:
                     scores[p1_id] = scores[p1_id] + match.score1
                 if p2_id in scores:
@@ -474,10 +474,10 @@ class TournamentController:
         return scores
 
     def show_rankings(self, tournament):
-        """Affiche le classement actuel du tournoi sous forme tabulaire.
+        """Displays the current tournament ranking in tabular format.
 
         Args:
-            tournament (Tournament): Le tournoi à afficher.
+            tournament (Tournament): The tournament to display.
         """
         scores = self.calculate_scores(tournament)
         sorted_players = sorted(
@@ -485,6 +485,6 @@ class TournamentController:
             key=lambda p: (scores.get(p.chess_id, 0), p.chess_id),
             reverse=True
         )
-        # Déléguer l'affichage à la vue (tabulate)
+        # Delegate display to the view
         self.view.display_rankings(sorted_players, scores, tournament.name)
         self.view.get_user_input("Press Enter to continue...")

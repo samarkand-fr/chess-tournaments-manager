@@ -1,30 +1,30 @@
-"""Module définissant la classe Round pour les tours de tournoi."""
+"""Module defining the Round class for tournament rounds."""
 from typing import List
 from .match import Match
 
 
 class Round:
-    """Représente un tour dans un tournoi d'échecs.
+    """Represents a round in a chess tournament.
 
-    Un tour contient plusieurs matchs joués simultanément et enregistre
-    les heures de début et de fin.
+    A round contains several matches played simultaneously and records
+    the start and end times.
 
     Attributes:
-        name (str): Nom du tour (ex: "Round 1").
-        start_time (str): Heure de début au format "DD/MM/YYYY HH:MM".
-        end_time (str): Heure de fin au format "DD/MM/YYYY HH:MM".
-        matches (List[Match]): Liste des matchs du tour.
+        name (str): Name of the round (e.g., "Round 1").
+        start_time (str): Start time in "DD/MM/YYYY HH:MM" format.
+        end_time (str): End time in "DD/MM/YYYY HH:MM" format.
+        matches (List[Match]): List of matches in the round.
     """
 
     def __init__(self, name, start_time="", end_time="",
                  matches: List[Match] = None):
-        """Initialise un nouveau tour.
+        """Initializes a new round.
 
         Args:
-            name (str): Nom du tour.
-            start_time (str, optional): Heure de début. Par défaut "".
-            end_time (str, optional): Heure de fin. Par défaut "".
-            matches (List[Match], optional): Liste de matchs. Par défaut None.
+            name (str): Name of the round.
+            start_time (str, optional): Start time. Defaults to "".
+            end_time (str, optional): End time. Defaults to "".
+            matches (List[Match], optional): List of matches. Defaults to None.
         """
         self.name = name
         self.start_time = start_time
@@ -32,27 +32,27 @@ class Round:
         self.matches = matches if matches else []
 
     def add_match(self, match: Match):
-        """Ajoute un match au tour.
+        """Adds a match to the round.
 
         Args:
-            match (Match): Match à ajouter.
+            match (Match): Match to add.
         """
         self.matches.append(match)
 
     def to_dict(self):
-        """Convertit le tour en dictionnaire pour la sérialisation.
+        """Converts the round to a dictionary for serialization.
 
-        Les matchs sont sérialisés sous forme de tuples.
+        Matches are serialized as tuples.
 
         Returns:
-            dict: Dictionnaire contenant toutes les données du tour.
+            dict: Dictionary containing all round data.
         """
         serialized_matches = []
         for match in self.matches:
             p1, s1 = match.player1, match.score1
             p2, s2 = match.player2, match.score2
 
-            # Si p1/p2 sont des objets Player, convertir en dict
+            # If p1/p2 are Player objects, convert to dict
             p1_data = p1.to_dict() if hasattr(p1, 'to_dict') else p1
             p2_data = p2.to_dict() if hasattr(p2, 'to_dict') else p2
 
@@ -67,13 +67,13 @@ class Round:
 
     @classmethod
     def from_dict(cls, data):
-        """Crée une instance de Round à partir d'un dictionnaire.
+        """Creates a Round instance from a dictionary.
 
         Args:
-            data (dict): Dictionnaire contenant les données du tour.
+            data (dict): Dictionary containing round data.
 
         Returns:
-            Round: Nouvelle instance de Round.
+            Round: New Round instance.
         """
         matches_data = data.get("matches", [])
         matches = []

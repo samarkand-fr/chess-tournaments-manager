@@ -1,30 +1,30 @@
-"""Module de base pour la vue."""
+"""Base module for the view."""
 
 
 class BaseView:
-    """Classe de base contenant les méthodes d'affichage communes."""
+    """Base class containing common display methods."""
 
     @staticmethod
     def display_message(message):
-        """Affiche un message d'information."""
+        """Displays an information message."""
         print(f"\n[INFO] {message}")
 
     @staticmethod
     def display_error(message):
-        """Affiche un message d'erreur."""
+        """Displays an error message."""
         print(f"\n[ERROR] {message}")
 
     @staticmethod
     def get_user_input(prompt):
-        """Demande une entrée à l'utilisateur."""
+        """Prompts the user for input."""
         return input(prompt)
 
     @staticmethod
     def pause():
-        """Met en pause et attend que l'utilisateur appuie sur Entrée."""
+        """Pauses and waits for the user to press Enter."""
         input("\nPress Enter to continue...")
 
     @staticmethod
     def display_report_header(title):
-        """Affiche un en-tête de rapport."""
+        """Displays a report header."""
         print(f"\n=== {title} ===")

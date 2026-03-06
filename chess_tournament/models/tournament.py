@@ -1,42 +1,42 @@
-"""Module définissant la classe Tournament pour les tournois d'échecs."""
+"""Module defining the Tournament class for chess tournaments."""
 from typing import List
 from .round import Round
 from .player import Player
 
 
 class Tournament:
-    """Représente un tournoi d'échecs.
+    """Represents a chess tournament.
 
-    Un tournoi contient des joueurs, des tours, et toutes les informations
-    nécessaires pour gérer la compétition selon le système suisse.
+    A tournament contains players, rounds, and all the information
+    necessary to manage the competition according to the Swiss system.
 
     Attributes:
-        name (str): Nom du tournoi.
-        location (str): Lieu du tournoi.
-        start_date (str): Date de début (YYYY-MM-DD).
-        end_date (str): Date de fin (YYYY-MM-DD).
-        description (str): Description du tournoi.
-        num_rounds (int): Nombre total de tours (par défaut 4).
-        current_round (int): Numéro du tour actuel.
-        rounds (List[Round]): Liste des tours joués.
-        players (List[Player]): Liste des joueurs inscrits.
+        name (str): Tournament name.
+        location (str): Tournament location.
+        start_date (str): Start date (YYYY-MM-DD).
+        end_date (str): End date (YYYY-MM-DD).
+        description (str): Tournament description.
+        num_rounds (int): Total number of rounds (default 4).
+        current_round (int): Current round number.
+        rounds (List[Round]): List of rounds played.
+        players (List[Player]): List of registered players.
     """
 
     def __init__(self, name, location, start_date, end_date, description,
                  num_rounds=4, current_round=1, rounds: List[Round] = None,
                  players: List[Player] = None):
-        """Initialise un nouveau tournoi.
+        """Initializes a new tournament.
 
         Args:
-            name (str): Nom du tournoi.
-            location (str): Lieu du tournoi.
-            start_date (str): Date de début.
-            end_date (str): Date de fin.
-            description (str): Description du tournoi.
-            num_rounds (int, optional): Nombre de tours. Par défaut 4.
-            current_round (int, optional): Tour actuel. Par défaut 1.
-            rounds (List[Round], optional): Liste de tours. Par défaut None.
-            players (List[Player], optional): Liste de joueurs. Par défaut None.
+            name (str): Tournament name.
+            location (str): Tournament location.
+            start_date (str): Start date.
+            end_date (str): End date.
+            description (str): Tournament description.
+            num_rounds (int, optional): Number of rounds. Defaults to 4.
+            current_round (int, optional): Current round. Defaults to 1.
+            rounds (List[Round], optional): List of rounds. Defaults to None.
+            players (List[Player], optional): List of players. Defaults to None.
         """
         self.name = name
         self.location = location
@@ -49,26 +49,26 @@ class Tournament:
         self.players = players if players else []
 
     def add_player(self, player: Player):
-        """Ajoute un joueur au tournoi.
+        """Adds a player to the tournament.
 
         Args:
-            player (Player): Joueur à ajouter.
+            player (Player): Player to add.
         """
         self.players.append(player)
 
     def add_round(self, round_instance: Round):
-        """Ajoute un tour au tournoi.
+        """Adds a round to the tournament.
 
         Args:
-            round_instance (Round): Tour à ajouter.
+            round_instance (Round): Round to add.
         """
         self.rounds.append(round_instance)
 
     def to_dict(self):
-        """Convertit le tournoi en dictionnaire pour la sérialisation.
+        """Converts the tournament to a dictionary for serialization.
 
         Returns:
-            dict: Dictionnaire contenant toutes les données du tournoi.
+            dict: Dictionary containing all tournament data.
         """
         return {
             "name": self.name,
@@ -84,20 +84,20 @@ class Tournament:
 
     @classmethod
     def from_dict(cls, data):
-        """Crée une instance de Tournament à partir d'un dictionnaire.
+        """Creates a Tournament instance from a dictionary.
 
         Args:
-            data (dict): Dictionnaire contenant les données du tournoi.
+            data (dict): Dictionary containing tournament data.
 
         Returns:
-            Tournament: Nouvelle instance de Tournament.
+            Tournament: New Tournament instance.
         """
-        # Conversion des rounds (liste de dictionnaires -> liste d'objets)
+        # Convert rounds (list of dictionaries -> list of objects)
         rounds_list = []
         for r_dict in data.get("rounds", []):
             rounds_list.append(Round.from_dict(r_dict))
 
-        # Conversion des joueurs (liste de dictionnaires -> liste d'objets)
+        # Convert players (list of dictionaries -> list of objects)
         players_list = []
         for p_dict in data.get("players", []):
             players_list.append(Player.from_dict(p_dict))

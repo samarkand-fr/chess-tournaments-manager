@@ -1,13 +1,13 @@
-"""Module de la vue pour les rapports."""
+"""Report view module."""
 from .base_view import BaseView
 
 
 class ReportView(BaseView):
-    """Classe pour la vue de génération des rapports."""
+    """Class for the report generation view."""
 
     @staticmethod
     def display_reports_menu():
-        """Affiche le menu de génération de rapports."""
+        """Displays the report generation menu."""
         print("\n--- REPORTS MENU ---")
         print("1. List All Players")
         print("2. List All Tournaments")

@@ -1,4 +1,4 @@
-"""Module de la vue pour les tournois."""
+"""Tournament view module."""
 from tabulate import tabulate
 from .base_view import BaseView
 from ..models.validator import Validator
@@ -6,11 +6,11 @@ from datetime import date
 
 
 class TournamentView(BaseView):
-    """Classe pour la vue de gestion des tournois."""
+    """Class for the tournament management view."""
 
     @staticmethod
     def display_tournament_menu():
-        """Affiche le menu de gestion des tournois."""
+        """Displays the tournament management menu."""
         print("\n--- TOURNAMENT MENU ---")
         print("1. Create Tournament")
         print("2. List Tournaments")
@@ -20,7 +20,7 @@ class TournamentView(BaseView):
 
     @staticmethod
     def display_tournament_management_menu(tournament_name, status_info=""):
-        """Affiche le menu de gestion d'un tournoi."""
+        """Displays the management menu for a tournament."""
         print(f"\n--- MANAGING: {tournament_name} ---")
         if status_info:
             print(f"Status: {status_info}")
@@ -34,7 +34,7 @@ class TournamentView(BaseView):
 
     @staticmethod
     def get_tournament_info():
-        """Demande les informations d'un nouveau tournoi avec validation."""
+        """Prompts for new tournament information with validation."""
         today_str = date.today().strftime("%d/%m/%Y")
 
         while True:
@@ -107,7 +107,7 @@ class TournamentView(BaseView):
 
     @staticmethod
     def display_tournaments(tournaments):
-        """Affiche une liste de tournois sous forme de tableau."""
+        """Displays a list of tournaments in a table format."""
         print("\n--- TOURNAMENTS LIST ---")
         if not tournaments:
             print("No tournaments found.")
@@ -128,7 +128,7 @@ class TournamentView(BaseView):
 
     @staticmethod
     def display_matches_for_scoring(matches):
-        """Affiche les matchs d'un tour pour la saisie des scores."""
+        """Displays round matches for score entry."""
         print("\n--- CURRENT ROUND MATCHES ---")
         if not matches:
             print("No matches in this round.")
@@ -155,10 +155,10 @@ class TournamentView(BaseView):
 
     @staticmethod
     def display_rankings(sorted_players, scores, tournament_name):
-        """Affiche le classement des joueurs sous forme de tableau tabulaire."""
-        print(f"\n--- CLASSEMENT : {tournament_name} ---")
+        """Displays player rankings in a table format."""
+        print(f"\n--- RANKING: {tournament_name} ---")
         if not sorted_players:
-            print("Aucun joueur inscrit.")
+            print("No registered players.")
             return
 
         table_data = []
@@ -172,23 +172,23 @@ class TournamentView(BaseView):
 
         print(tabulate(
             table_data,
-            headers=["#", "Joueur", "ID", "Score"],
+            headers=["#", "Player", "ID", "Score"],
             tablefmt="fancy_grid"
         ))
 
     @staticmethod
     def display_rounds_report(rounds):
-        """Affiche les rounds et matchs d'un tournoi sous forme tabulaire."""
+        """Displays a tournament's rounds and matches in a table format."""
         if not rounds:
-            print("Aucun round joué.")
+            print("No rounds played.")
             return
 
         for round_obj in rounds:
             print(f"\n  {round_obj.name}")
-            print(f"  Début : {round_obj.start_time}  |  Fin : {round_obj.end_time or 'en cours'}")
+            print(f"  Start: {round_obj.start_time}  |  End: {round_obj.end_time or 'in progress'}")
 
             if not round_obj.matches:
-                print("  (Aucun match dans ce round.)")
+                print("  (No matches in this round.)")
                 continue
 
             table_data = []
@@ -198,35 +198,35 @@ class TournamentView(BaseView):
                 p1_name = p1.last_name if hasattr(p1, 'last_name') else p1.get('last_name', 'Unknown')
                 p2_name = p2.last_name if hasattr(p2, 'last_name') else p2.get('last_name', 'Unknown')
                 score_txt = f"{match.score1} - {match.score2}"
-                status = "Terminé" if match.score1 + match.score2 > 0 else "En attente"
+                status = "Finished" if match.score1 + match.score2 > 0 else "Pending"
                 table_data.append([i, f"{p1_name} vs {p2_name}", score_txt, status])
 
             print(tabulate(
                 table_data,
-                headers=["#", "Match", "Score", "Statut"],
+                headers=["#", "Match", "Score", "Status"],
                 tablefmt="fancy_grid"
             ))
 
     @staticmethod
     def display_tournament_details(tournament):
-        """Affiche les détails d'un tournoi sous forme de tableau."""
+        """Displays tournament details in a table format."""
         table_data = [
-            ["Nom", tournament.name],
-            ["Lieu", tournament.location],
-            ["Dates", f"Du {tournament.start_date} au {tournament.end_date}"],
-            ["Tours", tournament.num_rounds],
+            ["Name", tournament.name],
+            ["Location", tournament.location],
+            ["Dates", f"From {tournament.start_date} to {tournament.end_date}"],
+            ["Rounds", tournament.num_rounds],
             ["Description", tournament.description or "N/A"]
         ]
 
         print(tabulate(
             table_data,
-            headers=["Attribut", "Valeur"],
+            headers=["Attribute", "Value"],
             tablefmt="fancy_grid"
         ))
 
     @staticmethod
     def display_round_selection(rounds):
-        """Affiche la liste des rounds pour permettre une sélection."""
+        """Displays the list of rounds for selection."""
         print("\n--- SELECT ROUND ---")
         for i, round_obj in enumerate(rounds, 1):
             unscored = sum(
@@ -238,5 +238,5 @@ class TournamentView(BaseView):
 
     @staticmethod
     def display_scoring_prompt(p1_name, p2_name):
-        """Affiche le titre du match sur le point d'être scoré."""
+        """Displays the title of the match about to be scored."""
         print(f"\nScoring: {p1_name} vs {p2_name}")

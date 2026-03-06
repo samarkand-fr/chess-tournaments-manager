@@ -1,7 +1,7 @@
-"""Module de gestion de la persistance des données en JSON.
+"""JSON data persistence management module.
 
-Ce module fournit une classe Database pour gérer le chargement et la
-sauvegarde des joueurs et tournois dans des fichiers JSON.
+This module provides a Database class to manage loading and
+saving players and tournaments in JSON files.
 """
 import json
 import os
@@ -9,30 +9,30 @@ import glob
 
 
 class Database:
-    """Gère la persistance des données de l'application en JSON.
+    """Manages application data persistence in JSON.
 
-    Cette classe fournit des méthodes statiques pour charger et sauvegarder
-    les données des joueurs et des tournois dans des fichiers JSON.
+    This class provides methods to load and save
+    player and tournament data in JSON files.
 
     Attributes:
-        PLAYERS_FILE (str): Chemin vers le fichier des joueurs.
-        TOURNAMENTS_DIR (str): Répertoire contenant les fichiers de tournois.
+        PLAYERS_FILE (str): Path to the players file.
+        TOURNAMENTS_DIR (str): Directory containing tournament files.
     """
 
     PLAYERS_FILE = "data/players.json"
     TOURNAMENTS_DIR = "data/tournaments"
 
     def __init__(self):
-        """Initialise la base de données JSON."""
+        """Initializes the JSON database."""
         pass
 
     def ensure_data_dirs(self):
-        """Crée les répertoires de données s'ils n'existent pas."""
+        """Creates data directories if they do not exist."""
         os.makedirs("data", exist_ok=True)
         os.makedirs(self.TOURNAMENTS_DIR, exist_ok=True)
 
     def load_players(self):
-        """Charge la liste des joueurs depuis le fichier JSON."""
+        """Loads the list of players from the JSON file."""
         self.ensure_data_dirs()
         if not os.path.exists(self.PLAYERS_FILE):
             return []
@@ -43,13 +43,13 @@ class Database:
             return []
 
     def save_players(self, players_data):
-        """Sauvegarde la liste des joueurs dans le fichier JSON."""
+        """Saves the list of players to the JSON file."""
         self.ensure_data_dirs()
         with open(self.PLAYERS_FILE, "w") as f:
             json.dump(players_data, f, indent=4)
 
     def load_tournaments(self):
-        """Charge tous les tournois depuis leurs fichiers JSON individuels."""
+        """Loads all tournaments from their individual JSON files."""
         self.ensure_data_dirs()
         tournaments = []
         files = glob.glob(os.path.join(self.TOURNAMENTS_DIR, "*.json"))
@@ -62,7 +62,7 @@ class Database:
         return tournaments
 
     def save_tournament(self, tournament_data):
-        """Sauvegarde un tournoi dans son fichier JSON individuel."""
+        """Saves a tournament to its individual JSON file."""
         self.ensure_data_dirs()
         name = tournament_data["name"]
         safe_name = "".join(

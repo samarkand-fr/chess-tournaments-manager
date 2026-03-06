@@ -1,13 +1,13 @@
-"""Module de la vue principale."""
+"""Main view module."""
 from .base_view import BaseView
 
 
 class MainView(BaseView):
-    """Classe pour la vue du menu principal."""
+    """Class for the main menu view."""
 
     @staticmethod
     def display_main_menu():
-        """Affiche le menu principal et retourne le choix utilisateur."""
+        """Displays the main menu and returns the user's choice."""
         print("\n--- CHESS TOURNAMENT MANAGER ---")
         print("1. Manage Players")
         print("2. Manage Tournaments")

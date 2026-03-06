@@ -1,4 +1,4 @@
-"""Module du contrôleur de génération de rapports."""
+"""Report generation controller module."""
 from ..models.tournament import Tournament
 from ..models.player import Player
 from ..views.report_view import ReportView
@@ -7,24 +7,24 @@ from ..views.tournament_view import TournamentView
 
 
 class ReportController:
-    """Contrôleur pour la génération de rapports.
+    """Controller for report generation.
 
-    Gère l'affichage de différents rapports sur les joueurs et tournois.
+    Manages the display of various reports on players and tournaments.
 
     Attributes:
-        view: Instance de la vue pour l'affichage.
+        view: View instance for display.
     """
 
     def __init__(self, db):
-        """Initialise le contrôleur de rapports."""
+        """Initializes the report controller."""
         self.view = ReportView()
         self.db = db
 
     def run_reports(self):
-        """Lance le menu de génération de rapports.
+        """Launches the report generation menu.
 
-        Affiche le menu des rapports et traite les choix jusqu'à
-        ce que l'utilisateur retourne au menu principal.
+        Displays the report menu and processes choices until
+        the user returns to the main menu.
         """
         while True:
             choice = self.view.display_reports_menu()
@@ -44,7 +44,7 @@ class ReportController:
                 self.view.display_error("Invalid choice")
 
     def list_all_players(self):
-        """Affiche la liste de tous les joueurs triés alphabétiquement."""
+        """Displays the list of all players sorted alphabetically."""
         data = self.db.load_players()
         players = [Player.from_dict(p) for p in data]
         players.sort(key=lambda p: (p.last_name, p.first_name))
@@ -53,7 +53,7 @@ class ReportController:
         self.view.pause()
 
     def list_all_tournaments(self):
-        """Affiche la liste de tous les tournois."""
+        """Displays the list of all tournaments."""
         data = self.db.load_tournaments()
         tournaments = [Tournament.from_dict(t) for t in data]
 
@@ -61,10 +61,10 @@ class ReportController:
         self.view.pause()
 
     def _select_tournament(self):
-        """Permet à l'utilisateur de sélectionner un tournoi.
+        """Allows the user to select a tournament.
 
         Returns:
-            Tournament: Le tournoi sélectionné, ou None si invalide.
+            Tournament: The selected tournament, or None if invalid.
         """
         data = self.db.load_tournaments()
         tournaments = [Tournament.from_dict(t) for t in data]
@@ -86,7 +86,7 @@ class ReportController:
         return None
 
     def tournament_details(self):
-        """Affiche les détails d'un tournoi sélectionné."""
+        """Displays the details of a selected tournament."""
         tournament = self._select_tournament()
         if tournament:
             self.view.display_report_header(f"DETAILS: {tournament.name}")
@@ -94,7 +94,7 @@ class ReportController:
             self.view.pause()
 
     def tournament_players(self):
-        """Affiche la liste des joueurs d'un tournoi sélectionné."""
+        """Displays the list of players for a selected tournament."""
         tournament = self._select_tournament()
         if tournament:
             self.view.display_report_header(f"PLAYERS: {tournament.name}")
@@ -106,10 +106,10 @@ class ReportController:
             self.view.pause()
 
     def tournament_rounds(self):
-        """Affiche les tours et matchs d'un tournoi sélectionné sous forme tabulaire."""
+        """Displays the rounds and matches of a selected tournament in a tabular format."""
         tournament = self._select_tournament()
         if tournament:
             self.view.display_report_header(f"ROUNDS & MATCHES: {tournament.name}")
-            # Déléguer l'affichage tabulaire à la vue
+            # Delegate tabular display to the view
             TournamentView.display_rounds_report(tournament.rounds)
             self.view.pause()

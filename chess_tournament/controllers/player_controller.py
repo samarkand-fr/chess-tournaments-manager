@@ -1,49 +1,49 @@
-"""Module du contrôleur de gestion des joueurs."""
+"""Player management controller module."""
 from ..models.player import Player
 from ..views.player_view import PlayerView
 
 
 class PlayerController:
-    """Contrôleur pour la gestion des joueurs.
+    """Controller for player management.
 
-    Gère la création, le chargement et l'affichage des joueurs.
+    Manages the creation, loading, and display of players.
 
     Attributes:
-        view: Instance de la vue pour l'affichage.
-        players (list): Liste des joueurs chargés.
+        view: View instance for display.
+        players (list): List of loaded players.
     """
 
     def __init__(self, db):
-        """Initialise le contrôleur de joueurs."""
+        """Initializes the player controller."""
         self.view = PlayerView()
         self.db = db
         self.players = []
         self.load_players()
 
     def load_players(self):
-        """Charge tous les joueurs depuis la base de données."""
+        """Loads all players from the database."""
         data = self.db.load_players()
-        # On vide la liste actuelle
+        # Clear current list
         self.players = []
-        # Pour chaque dictionnaire de joueur...
+        # For each player dictionary...
         for p in data:
-            # ...on crée un objet Player
+            # ...create a Player object
             player_obj = Player.from_dict(p)
             self.players.append(player_obj)
 
     def save_players(self):
-        """Sauvegarde tous les joueurs dans la base de données."""
+        """Saves all players to the database."""
         data = []
-        # Convertir chaque joueur en dictionnaire
+        # Convert each player to dictionary
         for p in self.players:
             data.append(p.to_dict())
         self.db.save_players(data)
 
     def create_player(self):
-        """Crée un nouveau joueur via l'interaction utilisateur.
+        """Creates a new player via user interaction.
 
-        Demande les informations du joueur à l'utilisateur, crée l'instance,
-        l'ajoute à la liste et sauvegarde.
+        Prompts user for player info, creates instance,
+        adds to list, and saves.
         """
         player_info = self.view.get_player_info()
 
@@ -64,18 +64,18 @@ class PlayerController:
         )
 
     def list_players(self):
-        """Affiche la liste de tous les joueurs."""
+        """Displays the list of all players."""
         self.view.display_players(self.players)
         self.view.get_user_input("Press Enter to continue...")
 
     def get_player_by_index(self, index):
-        """Récupère un joueur par son index dans la liste.
+        """Retrieves a player by their index in the list.
 
         Args:
-            index (int): Index du joueur (0-based).
+            index (int): Player index (0-based).
 
         Returns:
-            Player: Le joueur à l'index spécifié, ou None si invalide.
+            Player: The player at the specified index, or None if invalid.
         """
         if 0 <= index < len(self.players):
             return self.players[index]

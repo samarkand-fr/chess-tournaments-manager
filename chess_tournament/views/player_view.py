@@ -1,15 +1,15 @@
-"""Module de la vue pour les joueurs."""
+"""Player view module."""
 from tabulate import tabulate
 from .base_view import BaseView
 from ..models.validator import Validator
 
 
 class PlayerView(BaseView):
-    """Classe pour la vue de gestion des joueurs."""
+    """Class for the player management view."""
 
     @staticmethod
     def display_player_menu():
-        """Affiche le menu des joueurs."""
+        """Displays the player menu."""
         print("\n--- PLAYER MENU ---")
         print("1. Create Player")
         print("2. List Players")
@@ -18,7 +18,7 @@ class PlayerView(BaseView):
 
     @staticmethod
     def get_player_info():
-        """Demande les informations d'un nouveau joueur avec validation."""
+        """Prompts for new player information with validation."""
         while True:
             print("\n--- NEW PLAYER ---")
 
@@ -77,7 +77,7 @@ class PlayerView(BaseView):
 
     @staticmethod
     def display_players(players):
-        """Affiche une liste de joueurs sous forme de tableau."""
+        """Displays a list of players in a table format."""
         print("\n--- PLAYERS LIST ---")
         if not players:
             print("No players found.")
