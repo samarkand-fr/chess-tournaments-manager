@@ -1,8 +1,9 @@
 """Module du contrôleur principal de l'application."""
-from ..views.view import View
+from ..views.main_view import MainView
 from .player_controller import PlayerController
 from .tournament_controller import TournamentController
 from .report_controller import ReportController
+from .database import Database
 
 
 class MainController:
@@ -11,20 +12,22 @@ class MainController:
     Orchestre les différents contrôleurs et gère le menu principal.
 
     Attributes:
-        view (View): Instance de la vue principale.
+        view (MainView): Instance de la vue principale.
         player_controller (PlayerController): Contrôleur des joueurs.
         tournament_controller (TournamentController): Contrôleur des tournois.
         report_controller (ReportController): Contrôleur des rapports.
+        db (Database): Instance de la base de données.
     """
 
     def __init__(self):
         """Initialise le contrôleur principal et tous les sous-contrôleurs."""
-        self.view = View()
-        self.player_controller = PlayerController(self.view)
+        self.view = MainView()
+        self.db = Database()
+        self.player_controller = PlayerController(self.db)
         self.tournament_controller = TournamentController(
-            self.view, self.player_controller
+            self.player_controller, self.db
         )
-        self.report_controller = ReportController(self.view)
+        self.report_controller = ReportController(self.db)
 
     def run(self):
         """Lance la boucle principale de l'application.
@@ -53,7 +56,7 @@ class MainController:
         jusqu'à ce que l'utilisateur retourne au menu principal.
         """
         while True:
-            choice = self.view.display_player_menu()
+            choice = self.player_controller.view.display_player_menu()
             if choice == "1":
                 self.player_controller.create_player()
             elif choice == "2":
@@ -70,7 +73,7 @@ class MainController:
         jusqu'à ce que l'utilisateur retourne au menu principal.
         """
         while True:
-            choice = self.view.display_tournament_menu()
+            choice = self.tournament_controller.view.display_tournament_menu()
             if choice == "1":
                 self.tournament_controller.create_tournament()
             elif choice == "2":

@@ -4,7 +4,7 @@ import random
 from ..models.tournament import Tournament
 from ..models.round import Round
 from ..models.match import Match
-from .database import Database
+from ..views.tournament_view import TournamentView
 
 
 class TournamentController:
@@ -19,21 +19,22 @@ class TournamentController:
         tournaments (list): Liste des tournois chargés.
     """
 
-    def __init__(self, view, player_controller):
+    def __init__(self, player_controller, db):
         """Initialise le contrôleur de tournois.
 
         Args:
-            view: Instance de la vue.
             player_controller: Contrôleur des joueurs.
+            db: Instance de base de données.
         """
-        self.view = view
+        self.view = TournamentView()
         self.player_controller = player_controller
+        self.db = db
         self.tournaments = []
         self.load_tournaments()
 
     def load_tournaments(self):
         """Charge tous les tournois depuis la base de données."""
-        data = Database.load_tournaments()
+        data = self.db.load_tournaments()
         # On vide la liste actuelle
         self.tournaments = []
         # Pour chaque dictionnaire de tournoi dans les données...
@@ -49,7 +50,7 @@ class TournamentController:
         Args:
             tournament (Tournament): Tournoi à sauvegarder.
         """
-        Database.save_tournament(tournament.to_dict())
+        self.db.save_tournament(tournament.to_dict())
 
     def create_tournament(self):
         """Crée un nouveau tournoi via l'interaction utilisateur."""

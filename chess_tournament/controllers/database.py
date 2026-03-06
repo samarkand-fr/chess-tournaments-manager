@@ -22,52 +22,37 @@ class Database:
     PLAYERS_FILE = "data/players.json"
     TOURNAMENTS_DIR = "data/tournaments"
 
-    @classmethod
-    def ensure_data_dirs(cls):
+    def __init__(self):
+        """Initialise la base de données JSON."""
+        pass
+
+    def ensure_data_dirs(self):
         """Crée les répertoires de données s'ils n'existent pas."""
         os.makedirs("data", exist_ok=True)
-        os.makedirs(cls.TOURNAMENTS_DIR, exist_ok=True)
+        os.makedirs(self.TOURNAMENTS_DIR, exist_ok=True)
 
-    @classmethod
-    def load_players(cls):
-        """Charge la liste des joueurs depuis le fichier JSON.
-
-        Returns:
-            list: Liste de dictionnaires représentant les joueurs.
-                  Retourne une liste vide si le fichier n'existe pas
-                  ou est corrompu.
-        """
-        cls.ensure_data_dirs()
-        if not os.path.exists(cls.PLAYERS_FILE):
+    def load_players(self):
+        """Charge la liste des joueurs depuis le fichier JSON."""
+        self.ensure_data_dirs()
+        if not os.path.exists(self.PLAYERS_FILE):
             return []
         try:
-            with open(cls.PLAYERS_FILE, "r") as f:
+            with open(self.PLAYERS_FILE, "r") as f:
                 return json.load(f)
         except json.JSONDecodeError:
             return []
 
-    @classmethod
-    def save_players(cls, players_data):
-        """Sauvegarde la liste des joueurs dans le fichier JSON.
-
-        Args:
-            players_data (list): Liste de dictionnaires de joueurs à sauvegarder.
-        """
-        cls.ensure_data_dirs()
-        with open(cls.PLAYERS_FILE, "w") as f:
+    def save_players(self, players_data):
+        """Sauvegarde la liste des joueurs dans le fichier JSON."""
+        self.ensure_data_dirs()
+        with open(self.PLAYERS_FILE, "w") as f:
             json.dump(players_data, f, indent=4)
 
-    @classmethod
-    def load_tournaments(cls):
-        """Charge tous les tournois depuis leurs fichiers JSON individuels.
-
-        Returns:
-            list: Liste de dictionnaires représentant les tournois.
-                  Ignore les fichiers corrompus.
-        """
-        cls.ensure_data_dirs()
+    def load_tournaments(self):
+        """Charge tous les tournois depuis leurs fichiers JSON individuels."""
+        self.ensure_data_dirs()
         tournaments = []
-        files = glob.glob(os.path.join(cls.TOURNAMENTS_DIR, "*.json"))
+        files = glob.glob(os.path.join(self.TOURNAMENTS_DIR, "*.json"))
         for file_path in files:
             try:
                 with open(file_path, "r") as f:
@@ -76,23 +61,15 @@ class Database:
                 continue
         return tournaments
 
-    @classmethod
-    def save_tournament(cls, tournament_data):
-        """Sauvegarde un tournoi dans son fichier JSON individuel.
-
-        Le nom du fichier est dérivé du nom du tournoi, avec les caractères
-        spéciaux remplacés par des underscores.
-
-        Args:
-            tournament_data (dict): Dictionnaire contenant les données du tournoi.
-        """
-        cls.ensure_data_dirs()
+    def save_tournament(self, tournament_data):
+        """Sauvegarde un tournoi dans son fichier JSON individuel."""
+        self.ensure_data_dirs()
         name = tournament_data["name"]
         safe_name = "".join(
             c for c in name if c.isalnum() or c in (' ', '-', '_')
         ).strip().replace(' ', '_')
         filename = f"{safe_name}.json"
-        filepath = os.path.join(cls.TOURNAMENTS_DIR, filename)
+        filepath = os.path.join(self.TOURNAMENTS_DIR, filename)
 
         with open(filepath, "w") as f:
             json.dump(tournament_data, f, indent=4)

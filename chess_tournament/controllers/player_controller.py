@@ -1,6 +1,6 @@
 """Module du contrôleur de gestion des joueurs."""
 from ..models.player import Player
-from .database import Database
+from ..views.player_view import PlayerView
 
 
 class PlayerController:
@@ -13,19 +13,16 @@ class PlayerController:
         players (list): Liste des joueurs chargés.
     """
 
-    def __init__(self, view):
-        """Initialise le contrôleur de joueurs.
-
-        Args:
-            view: Instance de la vue pour l'interaction utilisateur.
-        """
-        self.view = view
+    def __init__(self, db):
+        """Initialise le contrôleur de joueurs."""
+        self.view = PlayerView()
+        self.db = db
         self.players = []
         self.load_players()
 
     def load_players(self):
         """Charge tous les joueurs depuis la base de données."""
-        data = Database.load_players()
+        data = self.db.load_players()
         # On vide la liste actuelle
         self.players = []
         # Pour chaque dictionnaire de joueur...
@@ -40,7 +37,7 @@ class PlayerController:
         # Convertir chaque joueur en dictionnaire
         for p in self.players:
             data.append(p.to_dict())
-        Database.save_players(data)
+        self.db.save_players(data)
 
     def create_player(self):
         """Crée un nouveau joueur via l'interaction utilisateur.
